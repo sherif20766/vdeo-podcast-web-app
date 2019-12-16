@@ -1,7 +1,9 @@
 import React from "react";
 
 const VideoDetail = ({ selectedPodCast }) => {
-	if(!selectedPodCast) { return <div>Loading...</div>}
+	if (!selectedPodCast) {
+		return <div>Loading...</div>;
+	}
 	const podScr = selectedPodCast.link;
 
 	return (
@@ -15,6 +17,6 @@ const VideoDetail = ({ selectedPodCast }) => {
 			</div>
 		</div>
 	);
-}
+};
 
 export default VideoDetail;
