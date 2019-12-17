@@ -12,4 +12,5 @@ The application reads the RSS file for the video podcasts available on http://rs
 
 ## Tech Used
 
-The app was created with React, Semantic UI
+-   React
+-   Semantic UI
