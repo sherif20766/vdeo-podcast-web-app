@@ -1,24 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Title from "./Title";
 import Description from "./Description";
 import PodCastList from "./PodCastList";
 import VideoDetail from "./VideoDetail";
 import RSSParser from "rss-parser";
 
-class App extends React.Component {
-	state = {
-		podcasts: [],
-		selectedPodCast: null
-	};
+const App = () => {
+	const [podcasts, setPodcasts] = useState([]);
+	const [selectedPodCast, setSelectedPodCast] = useState(null);
 
-	onItemClick = item => {
-		this.setState({
-			selectedPodCast: item
-		});
-	};
+	const onItemClick = item => setSelectedPodCast(item);
 
-	componentDidMount() {
-		let currentComponent = this;
+	useEffect(() => {
 		const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
 		let parser = new RSSParser();
@@ -29,42 +22,36 @@ class App extends React.Component {
 				if (err) throw err;
 				console.log(feed);
 
-				currentComponent.setState({
-					podcasts: feed,
-					selectedPodCast: feed.items[0]
-				});
+				setPodcasts(feed);
+				setSelectedPodCast(feed.items[0]);
 			}
 		);
-	}
+	}, []);
 
-	render() {
-		return (
-			<div
-				className="ui container segment"
-				style={{ maxWidth: "1280px", maxHeight: "720px" }}
-			>
-				<Title title={this.state.podcasts.title} />
-				<Description description={this.state.podcasts.description} />
+	return (
+		<div
+			className="ui container segment"
+			style={{ maxWidth: "1280px", maxHeight: "720px" }}
+		>
+			<Title title={podcasts.title} />
+			<Description description={podcasts.description} />
 
-				<main className="ui grid">
-					<div className="ui row">
-						<div className="eight wide column">
-							<PodCastList
-								onItemClick={this.onItemClick}
-								podcasts={this.state.podcasts.items}
-							/>
-						</div>
-
-						<div className="eight wide column">
-							<VideoDetail
-								selectedPodCast={this.state.selectedPodCast}
-							/>
-						</div>
+			<main className="ui grid">
+				<div className="ui row">
+					<div className="eight wide column">
+						<PodCastList
+							onItemClick={onItemClick}
+							podcasts={podcasts.items}
+						/>
 					</div>
-				</main>
-			</div>
-		);
-	}
-}
+
+					<div className="eight wide column">
+						<VideoDetail selectedPodCast={selectedPodCast} />
+					</div>
+				</div>
+			</main>
+		</div>
+	);
+};
 
 export default App;
